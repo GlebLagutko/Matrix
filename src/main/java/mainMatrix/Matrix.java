@@ -1,8 +1,9 @@
 package mainMatrix;
 
 
-import java.io.File;
+import java.io.*;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.*;
 
 import java.util.function.Function;
@@ -11,15 +12,27 @@ import java.util.stream.Collectors;
 public class Matrix {
     public static void main(String[] args) {
         List<String> lines = readFile(new File("src/main/java/mainMatrix/input.txt"));
-        for (String line : lines) {
-            System.out.println(line);
-        }
+        int[][] matrixArr = new int[lines.size()][];
         List<List<Integer>> matrix = lines.stream().map(parseLine()).collect(Collectors.toList());
         chechMatrix(matrix);
         Double[] answer = getX(matrix);
-        System.out.println("Answer : ");
-        for (Double x : answer) {
+        writeAnswerInFile(answer);
+
+      /*  for (Double x : answer) {
             System.out.println(x);
+        }*/
+
+    }
+
+    protected static void writeAnswerInFile(Double[] answer) {
+        try (FileWriter out = new FileWriter("src/main/java/mainMatrix/output.txt")) {
+            for (int i = 0; i < answer.length; i++) {
+                int j = i + 1;
+                out.write("X" + j + ":" + answer[i] + "\n");
+            }
+        } catch (IOException ex) {
+
+            System.out.println(ex.getMessage());
         }
     }
 
